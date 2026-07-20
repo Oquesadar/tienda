@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
@@ -29,7 +31,7 @@ public class Producto implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_producto")
     private Integer idProducto;
-    private Integer idCategoria;
+    //private Integer idCategoria;
     
     @Column(nullable=false, length=50)
     @NotBlank(message= "La descripcion no puede estar vacia")
@@ -54,6 +56,8 @@ public class Producto implements Serializable {
     
     private boolean activo; 
     
-    
+    @ManyToOne
+    @JoinColumn(name="id_categoria")
+    private Categoria categoria;
     
 }
