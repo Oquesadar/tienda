@@ -11,7 +11,7 @@
             <li th:each="c : ${categorias}" class="nav-item">
                 <a class="nav-link"
                    th:href="@{/consultas/{id}(id=${c.idCategoria})}">
-                      [[${c.descripcion}]]
+                    [[${c.descripcion}]]
                 </a>
             </li>
         </ul>
@@ -25,28 +25,28 @@
         <div th:each="p : ${productos}" class="col">
             <div class="card h-100 shadow-sm">
                 <div class ="d-flex justify-content-center align-items-center bg-light p-3"
-                    style="height: 200px;">
+                     style="height: 200px;">
                     <<img th:src="${p.rutaImagen}" class="img-fluid"
                           th:alt="${p.descripcion}"
                           style="max-height: 100%; object-fit: contain"/>                
-                          
+
                 </div>
                 <div class="card-header bg-white">
                     <h5 class="card-title text-center text-truncate">
                         [[${p.descripcion}]]
                     </h5>
-                  
+
                 </div>
                 <div class="card-body d-flex flex-column">
                     <p class="card-text text-muted mb-auto text-truncate">[[${p.detalle}]]</p>                 
                 </div>
-                
+
                 <div class="card-footer bg-white d-flex justify/content-between align-items-center">
                     <div  class="fw-bold">
                         <span class="text-success h5">[[${#numbers.formatCurrency(p.precio)}]]</span>
                         <span th:if="${p.existencias > 0}" class="badge text-bg-success ms-2">[[${p.existencias}]] unidades</span>
                         <span th:if="${p.existencias < 1}" class="badge text-bg-danger ms-2">Agotado</span>                       
-                        
+
                     </div>
                     <form action="/carrito/agregar" th:method="post" class="d-inline">
                         <input type="hidden" th:value="${p.idProducto}" name="idProducto"/>
@@ -55,19 +55,56 @@
                                 th:disabled="${p.existencias ==0}"
                                 onclick="addCart(this.form)">
                             <i class="fas fa-cart-plus"></i>                           
-                            
+
                         </button>
-                        
-                        
-                        
+
+
+
                     </form>
-                    
-                    
+
+
                 </div>   
-                
+
             </div>
         </div>
-        
+
     </div>
 
 </section>
+
+<!-- Fragmento #3 para presentar los formularios de las consultas-->
+<section th:fragment="consultas" class="row row-cols-4 p-2">
+    <div th:replace="~{consultas/fragmentos :: formConsulta('primary',#{consultas.derivadas},'/consultas/consultaDerivada')}"/>
+    <div th:replace="~{consultas/fragmentos :: formConsulta('warning',#{consultas.jpql},'/consultas/consultaJPQL')}"/>
+    <div th:replace="~{consultas/fragmentos :: formConsulta('success',#{consultas.sql},'/consultas/consultaSQL')}"/>
+    <div class='card'><p>Aca va la Practica #2</p></div>
+
+</section>
+
+<!-- Fragmento #4 para presentar el formulario de la consulta-->
+<div th:fragment='formConsulta(colorForm, textoForm, urlForm)' class="col">
+    <form method="get" th:action='@{${urlForm}}' class='was-validated'>
+        <div class='card h-100'>
+            <div class='card-header text-center text-white' th:classappend="${'bg-' + colorForm}">
+                <h5 class="mb-0">[[${textoForm}]]</h5>
+            </div>
+            <div class='card-body'>
+                <div class='mb-3'>
+                    <label class="form-label">[[#{consultas.precio.inferior}]]</label>
+                    <input type='number' name='precioInf' th:value='${precioInf}'
+                           class='form-control' min='0' required/>
+                </div>
+                <div class='mb-3'>
+                    <label class="form-label">[[#{consultas.precio.superior}]]</label>
+                    <input type='number' name='precioSup' th:value='${precioSup}'
+                           class='form-control' min='0' required/>
+                </div>
+            </div>
+            <div class='card-footer text-center'>
+                <button type='submit' class='btn text-white' th:classappend="${'btn-' + colorForm}">
+                    <i class='fa-solid fa-magnifying-glass'></i> [[${textoForm}]]
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -4,18 +4,12 @@
  */
 package com.tienda.controller;
 
-import com.tienda.domain.Producto;
 import com.tienda.service.CategoriaService;
 import com.tienda.service.ProductoService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
 
 /**
  *
@@ -44,17 +38,6 @@ public class IndexController {
         return "/index";
 
     }
-    @GetMapping("/consultas/{idCategoria}")
-    public String listado(@PathVariable("idCategoria") Integer idCategoria, Model model) {
-        var categoriaOpt = categoriaService.getCategoria(idCategoria);
-        List<Producto> productos = new ArrayList<Producto>();
-        if (categoriaOpt.isPresent()){
-            productos = categoriaOpt.get().getProductos();
-        }
-        model.addAttribute("productos", productos);
-        var categorias = categoriaService.getCategorias(true);
-        model.addAttribute("categorias", categorias);
-        return "/index";
-    }
+    
 }
 
