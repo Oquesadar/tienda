@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <head th:replace="~{general/fragmentos :: head}">
+        <title>[[#{plantilla.rutas}]]</title>
+    </head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header}"/>
+        <section class="container mt-5">
+            <h2 class="mb-4">
+                <i class="fas fa-route"></i> [[#{plantilla.rutas}]]
+            </h2>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-list"></i> [[#{plantilla.rutas}]]</h5>
+                    <span class="badge bg-light text-dark">[[${totalRutas}]]</span>
+                </div>
+                <div class="card-body p-0">
+                    <div th:if="${#lists.isEmpty(rutas)}" class="p-3 text-center text-muted">
+                        Sin rutas registradas.
+                    </div>
+                    <table th:unless="${#lists.isEmpty(rutas)}" class="table table-striped mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Ruta</th>
+                                <th>¿Requiere rol?</th>
+                                <th>Rol</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="r : ${rutas}">
+                                <td>[[${r.idRuta}]]</td>
+                                <td>[[${r.ruta}]]</td>
+                                <td>
+                                    <span th:if="${r.requiereRol}" class="badge bg-warning text-dark">Sí</span>
+                                    <span th:unless="${r.requiereRol}" class="badge bg-secondary">No</span>
+                                </td>
+                                <td>[[${r.rol != null ? r.rol.rol : '-'}]]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+        <footer th:replace="~{general/fragmentos :: footer}"/>
+    </body>
+</html>
