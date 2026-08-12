@@ -63,9 +63,8 @@
             <div class="card text-center bg-primary text-white mb-3">
                 <div class="card-body">
                     <h3>[[#{carrito.totalCompra}]]</h3>
-                    <h4 class="fs-4">
-                        [[${#numbers.formatCurrency(totalCarrito)}]]
-                    </h4>
+                    <h4 class="fs-4">[[${#numbers.formatCurrency(totalCarritoCRC)}]]</h4>
+                    <h4 class="fs-5">[[${#numbers.formatCurrency(totalCarritoUSD)}]]</h4>
                 </div>
             </div>
             <div class="card text-center bg-success text-white mb-3">
@@ -83,7 +82,19 @@
                         <i class='fas fa-fordward'></i> [[#{carrito.facturar}]]
                     </a>
                 </div>
-            </div> 
+            </div>
+            <div class="card text-center bg-info text-white mb-3">
+                <div class="card-body">
+                    <button class='btn btn-info'
+                            th:onclick="iniciarPagoPayPal([[${totalCarritoUSD}]])"
+                            type='button'>
+                        <i class='fab fa-cc-paypal'></i> [[#{carrito.facturar}]]                        
+                    </button>
+                    <script th:src="@{/js/pago.js}"></script>
+                </div>
+            </div>        
+
+
         </div>
     </div>            
 </section>

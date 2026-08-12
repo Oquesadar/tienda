@@ -1,13 +1,20 @@
 package com.tienda.controller;
 
+import com.tienda.domain.Constante;
 import com.tienda.domain.Item;
 import com.tienda.domain.Factura;
 import com.tienda.domain.Usuario;
 import com.tienda.service.CarritoService;
+import com.tienda.service.ConstanteService;
 import com.tienda.service.FacturaService;
 import com.tienda.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,20 +29,42 @@ public class CarritoController {
     private final CarritoService carritoService;
     private final UsuarioService usuarioService;
     private final FacturaService facturaService;
+    private final ConstanteService constanteService;
 
-    public CarritoController(CarritoService carritoService, UsuarioService usuarioService, FacturaService facturaService) {
+    public CarritoController(CarritoService carritoService, UsuarioService usuarioService, FacturaService facturaService, ConstanteService constanteService) {
+
         this.carritoService = carritoService;
         this.usuarioService = usuarioService;
         this.facturaService = facturaService;
+        this.constanteService = constanteService;
+        
     }
 
     // --- 1. MOSTRAR EL CARRITO ---
     @GetMapping("/carrito/listado")
     public String listado(HttpSession session, Model model) {
         List<Item> carrito = carritoService.obtenerCarrito(session);
+        var totalCarritoCRC = carritoService.calcularTotal(carrito);
 
+        Optional<Constante> tipoCambioOpt = constanteService.findByAtributo("dolar");
+        BigDecimal tipoCambio = new BigDecimal(510);
+        if (tipoCambioOpt.isPresent()) {
+            tipoCambio = new BigDecimal(Double.parseDouble(tipoCambioOpt.get().getValor()));
+        }
+        BigDecimal totalCarritoUSD = totalCarritoCRC.divide(tipoCambio, 2, RoundingMode.HALF_UP);
+
+        // 1. OBTENER la instancia de formato de moneda de EE. UU.
+        NumberFormat usdFormat = NumberFormat.getCurrencyInstance(Locale.US);
+
+        // 2. FORMATEAR el número a una cadena (String) de moneda (Ej: "$1,234.56")
+        String totalCarritoUSD_Str = usdFormat.format(totalCarritoUSD);
+
+        model.addAttribute("totalCarritoUSD_Str", totalCarritoUSD_Str);
         model.addAttribute("carritoItems", carrito);
-        model.addAttribute("totalCarrito", carritoService.calcularTotal(carrito));
+        model.addAttribute("totalCarritoCRC", totalCarritoCRC);
+        model.addAttribute("totalCarritoUSD", totalCarritoUSD);
+
+
 
         return "/carrito/listado";
     }

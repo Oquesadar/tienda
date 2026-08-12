@@ -1,0 +1,45 @@
+<!-- fragmento mostrar en el proceso de pago se canceló -->
+<section th:fragment="pagoCancel">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-3">
+            <div class="card m-5">
+                <div class="card-header text-center bg-warning">
+                    <h4>[[#{payment.cancel}]]</h4>
+                </div>
+                <div class='card-body'>                    
+                    <p>[[#{payment.cancel.text}]]</p>
+                    <h5>Id Order</h5>
+                    <p>[[${orderId}]]</p>
+                    <h5>Estado</h5>
+                    <p>[[${estado}]]</p>
+                </div>
+                <div class='card-footer text-center'>                        
+                    <a th:href='@{/}' class='btn btn-warning'>
+                        <i class="fas fa-home"></i> [[#{accion.regresar}]]
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- fragmento que hubo un error en el proceso de pago -->
+<section th:fragment="pagoError">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-3">
+            <div class="card m-5">
+                <div class="card-header text-center text-white bg-danger">
+                    <h4>[[#{payment.error}]]</h4>
+                </div>
+                <div class='card-body'>
+                    <p>[[#{payment.error.text}]]</p>
+                </div>
+                <div class='card-footer text-center'>                        
+                    <a th:href='@{/}' class='btn btn-danger text-white'>
+                        <i class="fas fa-home"></i> [[#{accion.regresar}]]
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
