@@ -77,7 +77,7 @@
     <div th:replace="~{consultas/fragmentos :: formConsulta('primary',#{consultas.derivadas},'/consultas/consultaDerivada')}"/>
     <div th:replace="~{consultas/fragmentos :: formConsulta('warning',#{consultas.jpql},'/consultas/consultaJPQL')}"/>
     <div th:replace="~{consultas/fragmentos :: formConsulta('success',#{consultas.sql},'/consultas/consultaSQL')}"/>
-    <div class='card'><p>Aca va la Practica #2</p></div>
+    <div th:replace="~{consultas/fragmentos :: formConsulta('danger',#{consultas.existencias},'/consultas/consultaExistencias')}"/>
 
 </section>
 

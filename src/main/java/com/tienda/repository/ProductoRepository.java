@@ -37,4 +37,10 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer>{
     public List<Producto> consultaSQL(BigDecimal precioInf, BigDecimal precioSup);
     
     
+    //Consulta derivada que recupera los productos dentro de un rango de precio
+    // pero con existencias mayores a cero
+    public List<Producto> findByPrecioBetweenAndExistenciasGreaterThanOrderByPrecioAsc(
+        BigDecimal precioInf, BigDecimal precioSup, Integer existencias);
+    
+    
 }

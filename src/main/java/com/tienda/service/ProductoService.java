@@ -90,4 +90,9 @@ public class ProductoService {
         return productoRepository.consultaSQL(precioInf, precioSup);
     }
     
+    @Transactional(readOnly=true)
+    public List<Producto> consultaExistencias(BigDecimal precioInf, BigDecimal precioSup){
+        return productoRepository.findByPrecioBetweenAndExistenciasGreaterThanOrderByPrecioAsc(precioInf, precioSup, 0);
+}
+    
 }

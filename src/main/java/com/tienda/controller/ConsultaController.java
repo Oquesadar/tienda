@@ -87,5 +87,15 @@ public class ConsultaController {
         return "/consultas/listado";
     }
     
+    @GetMapping("/consultaExistencias")
+    public String consultaExistencias(@RequestParam() BigDecimal precioInf,
+        @RequestParam() BigDecimal precioSup, Model model) {
+    var productos = productoService.consultaExistencias(precioInf, precioSup);
+    model.addAttribute("productos", productos);
+    model.addAttribute("precioInf", precioInf);
+    model.addAttribute("precioSup", precioSup);
+    return "/consultas/listado";
+}
+    
 }
 
